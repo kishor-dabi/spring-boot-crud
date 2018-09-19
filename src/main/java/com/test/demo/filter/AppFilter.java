@@ -33,7 +33,7 @@ public class AppFilter implements Filter{
 		System.out.println(" : : : : : : ;:filter call");
 		logger.info("filter:"+ ((HttpServletRequest)request).getRequestURL());
         chain.doFilter(request, response);
-	
+	 
 	}
 
 	@Override
