@@ -23,7 +23,9 @@ public class UserControlller {
 	@GetMapping("/users")
 	public User retrieveAllUsers() {
 		System.out.println("User get api-------------------------");
-		return new User();
+		User u = new User((long) 1,"amam","5455");
+		userRepository.save(u);
+		return u;
 //		return userRepository.findAll();
 	}
 
