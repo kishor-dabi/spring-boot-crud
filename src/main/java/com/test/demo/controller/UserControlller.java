@@ -23,7 +23,7 @@ public class UserControlller {
 	@GetMapping("/users")
 	public User retrieveAllUsers() {
 		System.out.println("User get api-------------------------");
-		User u = new User((long) 1,"amam","5455");
+		User u = new User(/*(long) 1,*/"abc","545589898","indore");
 		userRepository.save(u);
 		return u;
 //		return userRepository.findAll();
