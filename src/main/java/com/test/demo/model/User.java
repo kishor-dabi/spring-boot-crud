@@ -1,10 +1,13 @@
 package com.test.demo.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,14 +21,16 @@ public class User {
 	private String name;
 	@Column
 	private String number;
-	@Column
-	private String address;
+	
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "address_id")
+	private Address address;
 	
 	
 	public User() {
 		super();
 	}
-	public User(/*Long id,*/ String name, String number, String address) {
+	public User(/*Long id,*/ String name, String number, Address address) {
 		super();
 //		this.id = id;
 		this.name = name;
@@ -50,10 +55,10 @@ public class User {
 	public void setNumber(String number) {
 		this.number = number;
 	}
-	public String getAddress() {
+	public Address getAddress() {
 		return address;
 	}
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 }

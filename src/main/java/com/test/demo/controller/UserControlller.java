@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.test.demo.model.Address;
 import com.test.demo.model.User;
 import com.test.demo.service.UserRepository;
 
@@ -21,12 +22,15 @@ public class UserControlller {
 	private UserRepository userRepository;
 	
 	@GetMapping("/users")
-	public User retrieveAllUsers() {
+	public User retrieveUsers() {
 		System.out.println("User get api-------------------------");
-		User u = new User(/*(long) 1,*/"abc","545589898","indore");
+		Address a1 = new Address();
+		a1.setAddess("addess");
+		a1.setState("mp");
+		User u = new User(/*(long) 1,*/"abc","545589898",a1);
 		userRepository.save(u);
 		return u;
-//		return userRepository.findAll();
+//		return userRepository.findAll(); 
 	}
 
 	@PostMapping("/users")
@@ -38,5 +42,12 @@ public class UserControlller {
 		return user;
 //		return ResponseEntity.created(location).build();
 
+	}
+	
+	@GetMapping("/allusers")
+	public List<User> retrieveAllUsers() {
+		System.out.println("User get all api-------------------------");
+
+		return userRepository.findAll(); 
 	}
 }
