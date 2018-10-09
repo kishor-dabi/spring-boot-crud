@@ -19,7 +19,7 @@ public class Address {
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	int id;
 	@Column
-	String addess;
+	String address;
 	@Column
 	String state;
 	
@@ -34,10 +34,10 @@ public class Address {
 		super();
 	}
 
-	public Address( String addess, String state, User user) {
+	public Address( String address, String state, User user) {
 		super();
 //		this.id = id;
-		this.addess = addess;
+		this.address = address;
 		this.state = state;
 		this.user = user;
 	}
@@ -51,11 +51,11 @@ public class Address {
 	}
 
 	public String getAddess() {
-		return addess;
+		return address;
 	}
 
-	public void setAddess(String addess) {
-		this.addess = addess;
+	public void setAddess(String address) {
+		this.address = address;
 	}
 
 	public String getState() {
