@@ -45,6 +45,11 @@ public class User {
 		this.address = address;
 		this.accounts = accounts;
 	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", number=" + number + ", address=" + address + ", accounts="
+				+ accounts + "]";
+	}
 	public Long getId() {
 		return id;
 	}

@@ -30,7 +30,7 @@ public class UserControlller {
 		a1.setAddess("addess");
 		a1.setState("mp");	
 //		List<Account> l1 = new ArrayList<Account>();
-		User u = new User(/*(long) 1,*/"abc","545589898",a1,new ArrayList<Account>());
+		User u = new User(/*(long) 1,*/"aman","5489898",a1,new ArrayList<Account>());
 		userRepository.save(u);
 		return u;
 //		return userRepository.findAll(); 
@@ -38,11 +38,12 @@ public class UserControlller {
 
 	@PostMapping("/users")
 	public User createStudent(@RequestBody User user) {
+		System.out.println(user.getAccounts().toString().length() +' ' + user.getAddress().toString() + user.toString());
 		User u1 = userRepository.save(user);
-		System.out.println("User post api-------------------------"+u1);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(u1.getId()).toUri();
-		return user;
+//		System.out.println("User post api-------------------------"+u1);
+//		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+//				.buildAndExpand(u1.getId()).toUri();
+		return u1;
 //		return ResponseEntity.created(location).build();
 
 	}
