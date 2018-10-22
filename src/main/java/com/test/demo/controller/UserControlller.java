@@ -40,12 +40,7 @@ public class UserControlller {
 	public User createStudent(@RequestBody User user) {
 		System.out.println(user.getAccounts().toString().length() +' ' + user.getAddress().toString() + user.toString());
 		User u1 = userRepository.save(user);
-//		System.out.println("User post api-------------------------"+u1);
-//		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-//				.buildAndExpand(u1.getId()).toUri();
 		return u1;
-//		return ResponseEntity.created(location).build();
-
 	}
 	
 	@GetMapping("/allusers")
