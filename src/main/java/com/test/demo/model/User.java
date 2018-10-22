@@ -24,6 +24,8 @@ public class User {
 	private String name;
 	@Column
 	private String number;
+	@Column
+	private String password;
 	
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "address_id")
@@ -73,6 +75,12 @@ public class User {
 	}
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public List<Account> getAccounts() {
 		return accounts;

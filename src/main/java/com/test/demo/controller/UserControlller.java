@@ -23,7 +23,7 @@ public class UserControlller {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@GetMapping("/users")
+	@GetMapping("/v3/users")
 	public User retrieveUsers() {
 		System.out.println("User get api-------------------------");
 		Address a1 = new Address();
@@ -36,7 +36,7 @@ public class UserControlller {
 //		return userRepository.findAll(); 
 	}
 
-	@PostMapping("/users")
+	@PostMapping("/v3/users")
 	public User createStudent(@RequestBody User user) {
 		System.out.println(user.getAccounts().toString().length() +' ' + user.getAddress().toString() + user.toString());
 		User u1 = userRepository.save(user);
@@ -48,5 +48,11 @@ public class UserControlller {
 		System.out.println("User get all api-------------------------");
 
 		return userRepository.findAll(); 
+	}
+	@GetMapping("/token")
+	public String getToken() {
+		System.out.println("get Token api-------------------------");
+		return "Get token ";
+//		return userRepository.findAll(); 
 	}
 }
