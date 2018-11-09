@@ -82,7 +82,7 @@ public class TokenController {
 		Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 		System.out.println(SECRET + "-------------------------------");
 		jwtToken = Jwts.builder().setSubject(user1.getEmail()).setId(user1.getId().toString())
-					.setExpiration(new Date(new Date().getTime()+7*24*60*60*1000)).signWith(authconfig.getKey()).compact();
+					.setExpiration(new Date(new Date().getTime()+7*24*60*60*1000)).signWith(SignatureAlgorithm.HS256 ,authconfig.getKey()).compact();
 //		String claim = Jwts.parser().setSigningKey(key).parseClaimsJws(jwtToken).getBody().getSubject();//.equals("Joe");
 
 		logger.info(jwtToken + "           " );
