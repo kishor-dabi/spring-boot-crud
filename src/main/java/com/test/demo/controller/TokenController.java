@@ -99,4 +99,16 @@ public class TokenController {
 //		jwtToken = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
 //	            .signWith(SignatureAlgorithm.HS256, "secretkey").compact();
 	}
+	
+	@PostMapping("/create_user")
+	public User createUser(@RequestBody User user) {
+		System.out.println(user.toString() +"- --  -- -- - -- --- - create - user ");
+		User u1 = userRepository.save(user);
+//		System.out.println("User post api-------------------------"+u1);
+//		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+//				.buildAndExpand(u1.getId()).toUri();
+		return u1;
+//		return ResponseEntity.created(location).build();
+
+	}
 }

@@ -71,7 +71,7 @@ public class AppFilter implements Filter{
 			
 			logger.info("claim : : : :"+ claim);
 			//logger.info(auth+ "========="+ auth.length() );
-			if (((HttpServletRequest)request).getHeader("authorization") != null) {
+			if (((HttpServletRequest)request).getHeader("authorization") != null && userToken != null) {
 				if (auth.equals(userToken.getToken())) {
 					chain.doFilter(request, response);	
 				}else {
