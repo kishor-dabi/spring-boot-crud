@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="users")
@@ -27,9 +28,13 @@ public class User {
 	private String number;
 	
 	@Column(unique = true)
+	@NotNull(message = "email can not be null.")
 	private String email;
 	
-    
+    @Column
+    @NotNull(message = "password can not be null.")
+    private String password;
+	
 	@OneToOne(cascade = {CascadeType.ALL, CascadeType.REMOVE})
     @JoinColumn(name = "address_id")
 	private Address address;
@@ -50,7 +55,7 @@ public class User {
 		this.email = email;
 	}
 	
-	public User(/*Long id,*/ String name, String number,String email, Address address,List<Account> accounts) {
+	public User(/*Long id,*/ String name, String number,String email,String password, Address address,List<Account> accounts) {
 		super();
 //		this.id = id;
 		this.name = name;
@@ -58,6 +63,7 @@ public class User {
 		this.address = address;
 		this.accounts = accounts;
 		this.email = email;
+		this.password = password;
 	}
 	@Override
 	public String toString() {
@@ -87,6 +93,12 @@ public class User {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public Address getAddress() {
 		return address;

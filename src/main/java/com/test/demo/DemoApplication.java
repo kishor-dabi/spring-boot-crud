@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 //import org.springframework.boot.web.servlet.ServletComponentScan;
 //import org.springframework.context.annotation.ComponentScan;
 //import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.test.demo.filter.AppFilter;
 
@@ -29,6 +30,12 @@ public class DemoApplication {
 	    registration.setEnabled(false);
 	    return registration;
 	}
+
+	@Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder;
+    }
 
 
 }

@@ -32,7 +32,7 @@ public class UserControlller {
 		a1.setAddess("addess");
 		a1.setState("mp");	
 //		List<Account> l1 = new ArrayList<Account>();
-		User u = new User(/*(long) 1,*/"aman","5489898","aman@email.com",a1,new ArrayList<Account>());
+		User u = new User(/*(long) 1,*/"aman","5489898","aman@email.com","12345",a1,new ArrayList<Account>());
 		userRepository.save(u);
 		return u;
 //		return userRepository.findAll(); 

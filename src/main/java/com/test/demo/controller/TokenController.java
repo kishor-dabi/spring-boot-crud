@@ -6,15 +6,21 @@ import java.util.Base64;
 import java.util.Date;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.test.demo.exception.CustomeException;
 import com.test.demo.filter.AppFilter;
 import com.test.demo.filter.AuthConfig;
 import com.test.demo.model.Token;
@@ -40,6 +46,9 @@ public class TokenController {
 	@Autowired
 	AuthConfig authconfig;
 	
+	@Autowired
+	BCryptPasswordEncoder encoder;
+	
 	@PostMapping(path = "/token")
 	public String getToken(@RequestBody User user) throws ServletException {
 
@@ -47,14 +56,30 @@ public class TokenController {
 		
 		String jwtToken = "";
 
-	    if (user.getEmail()== null /*|| user.getPassword() == null*/) {
+	    if (user.getEmail()== null || user.getPassword() == null) {
 	        throw new ServletException("Please fill in username and password");
 	    }
 
+//	    PasswordEncoder pswEncode = new BCryptPasswordEncoder();
+//	    
+//	    String passwd = pswEncode.encode("123456");
+//
+//	    System.out.println(passwd +"-=-=-=-=-=- "+ pswEncode.matches("123456", passwd));
 	    String email = user.getEmail();
 //	    String password = user.getPassword();
 
 	    User user1 = userRepository.findByEmail(email);   //findByName(email);
+	    
+	    if (user1 == null) {
+			return "User not found";
+		}
+	    
+	    Boolean isUser = encoder.matches(user.getPassword(), user1.getPassword());
+	    
+	    if (!isUser) {
+		    logger.info("User not found");
+			return "please check your username & password";
+		}
 	    
 	    Token existToken = tokenService.findByUserid(user1.getId());
 	    
@@ -62,25 +87,30 @@ public class TokenController {
 			return existToken.getToken();
 		}
 	    
-	    
-	    if (user1 == null) {
-//    		throw new ServletException("User email not found.");
-    		return "User not Found";
-	    }
+
 	    logger.info(user1.toString());
         
-//	    String pwd = user1.getPassword();
-
-//	    if (!password.equals(pwd)) {
-//	        throw new ServletException("Invalid login. Please check your name and password.");
-//	    }
-
 		final String SECRET = Base64.getEncoder().encodeToString("secret".getBytes());
 
-		
-		
 		Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 		System.out.println(SECRET + "-------------------------------");
+		
+
+	    ObjectMapper mapper = new ObjectMapper();
+        try
+        {
+            String json = mapper.writeValueAsString(user1);
+            System.out.println(json);
+            
+            User usrString = mapper.readValue(json, User.class);
+            
+            System.out.println(usrString.toString() + ".....................................................");
+            
+        }catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		
 		jwtToken = Jwts.builder().setSubject(user1.getEmail()).setId(user1.getId().toString())
 					.setExpiration(new Date(new Date().getTime()+7*24*60*60*1000)).signWith(SignatureAlgorithm.HS256 ,authconfig.getKey()).compact();
 //		String claim = Jwts.parser().setSigningKey(key).parseClaimsJws(jwtToken).getBody().getSubject();//.equals("Joe");
@@ -101,14 +131,17 @@ public class TokenController {
 	}
 	
 	@PostMapping("/create_user")
-	public User createUser(@RequestBody User user) {
+	public User createUser(@RequestBody User user,HttpServletRequest request, HttpServletResponse response) throws CustomeException {
 		System.out.println(user.toString() +"- --  -- -- - -- --- - create - user ");
+		if (user.getPassword()==null) {
+			throw new CustomeException(500,"Password not filled");
+//			return response.sendError(500, "Password not filled.");
+		}
+		user.setPassword(encoder.encode(user.getPassword()));
+		
 		User u1 = userRepository.save(user);
-//		System.out.println("User post api-------------------------"+u1);
-//		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-//				.buildAndExpand(u1.getId()).toUri();
+
 		return u1;
-//		return ResponseEntity.created(location).build();
 
 	}
 }
