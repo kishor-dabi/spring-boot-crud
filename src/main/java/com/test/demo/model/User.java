@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="users")
@@ -25,7 +27,15 @@ public class User {
 	@Column
 	private String number;
 	
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@Column(unique = true)
+	@NotNull(message = "email can not be null.")
+	private String email;
+	
+    @Column
+    @NotNull(message = "password can not be null.")
+    private String password;
+	
+	@OneToOne(cascade = {CascadeType.ALL, CascadeType.REMOVE})
     @JoinColumn(name = "address_id")
 	private Address address;
     
@@ -37,17 +47,27 @@ public class User {
 	public User() {
 		super();
 	}
-	public User(/*Long id,*/ String name, String number, Address address,List<Account> accounts) {
+	public User(/*Long id,*/ String name, String number,String email) {
+		super();
+//		this.id = id;
+		this.name = name;
+		this.number = number;
+		this.email = email;
+	}
+	
+	public User(/*Long id,*/ String name, String number,String email,String password, Address address,List<Account> accounts) {
 		super();
 //		this.id = id;
 		this.name = name;
 		this.number = number;
 		this.address = address;
 		this.accounts = accounts;
+		this.email = email;
+		this.password = password;
 	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", number=" + number + ", address=" + address + ", accounts="
+		return "User [id=" + id + ", name=" + name +", email=" + email+ ", number=" + number + ", address=" + address + ", accounts="
 				+ accounts + "]";
 	}
 	public Long getId() {
@@ -67,6 +87,18 @@ public class User {
 	}
 	public void setNumber(String number) {
 		this.number = number;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public Address getAddress() {
 		return address;

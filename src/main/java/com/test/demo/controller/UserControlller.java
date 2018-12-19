@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -18,6 +19,7 @@ import com.test.demo.model.User;
 import com.test.demo.service.UserRepository;
 
 @RestController
+@RequestMapping("/v3")
 public class UserControlller {
 
 	@Autowired
@@ -30,7 +32,7 @@ public class UserControlller {
 		a1.setAddess("addess");
 		a1.setState("mp");	
 //		List<Account> l1 = new ArrayList<Account>();
-		User u = new User(/*(long) 1,*/"aman","5489898",a1,new ArrayList<Account>());
+		User u = new User(/*(long) 1,*/"aman","5489898","aman@email.com","12345",a1,new ArrayList<Account>());
 		userRepository.save(u);
 		return u;
 //		return userRepository.findAll(); 
