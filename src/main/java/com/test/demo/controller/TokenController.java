@@ -82,8 +82,66 @@ public class TokenController {
 		}
 	    
 	    Token existToken = tokenService.findByUserid(user1.getId());
-	    
+		Claims claim ;
+		Date date;
+
 	    if (existToken != null) {
+	    	
+	    	try {
+	    		claim = Jwts.parser().setSigningKey(authconfig.getKey()).parseClaimsJws(existToken.getToken()).getBody();//.getSubject();//.equals("Joe");
+				
+			} catch (Exception e) {
+				System.out.println(e);
+				System.out.println("jwt expire");
+				
+				logger.info(user1.toString());
+		        
+				final String SECRET = Base64.getEncoder().encodeToString("secret".getBytes());
+
+				Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+				System.out.println(SECRET + "-------------------------------");
+				
+
+			    ObjectMapper mapper = new ObjectMapper();
+		        try
+		        {
+		            String json = mapper.writeValueAsString(user1);
+		            System.out.println(json);
+		            
+		            User usrString = mapper.readValue(json, User.class);
+		            
+		            System.out.println(usrString.toString() + ".....................................................");
+		            
+		        }catch (Exception ex) {
+		        	System.out.println(ex + "==================exception");
+					// TODO: handle exception
+				}
+
+				
+				jwtToken = Jwts.builder().setSubject(user1.getEmail()).setId(user1.getId().toString())
+							.setExpiration(new Date(new Date().getTime()+7*24*60*60*1000)).signWith(SignatureAlgorithm.HS256 ,authconfig.getKey()).compact();
+//				String claim = Jwts.parser().setSigningKey(key).parseClaimsJws(jwtToken).getBody().getSubject();//.equals("Joe");
+
+				logger.info(jwtToken + "           " );
+				
+				existToken.setToken(jwtToken);
+				
+				
+//				Token token = new Token(jwtToken, user1.getId());
+//				token.setUser_id(user1.getId());
+				
+				tokenService.save(existToken); // save(token);
+				
+				return jwtToken;
+				
+				// TODO: handle exception
+			}
+//	    	
+//	    	
+//	    	System.out.println(claim+"+++++++++++++++++++++++++++++++++++++++++++++");
+//			id = (Integer.parseInt(claim.getId()));
+//			date = claim.getExpiration();
+//	    	System.out.println(date+"+++++++++++++++++++++++++++++++++++++++++++++");
 			return existToken.getToken();
 		}
 	    
@@ -107,6 +165,7 @@ public class TokenController {
             System.out.println(usrString.toString() + ".....................................................");
             
         }catch (Exception e) {
+        	System.out.println(e + "==================exception");
 			// TODO: handle exception
 		}
 
