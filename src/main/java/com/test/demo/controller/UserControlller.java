@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.test.demo.jsonview.UserView;
 import com.test.demo.model.Account;
 import com.test.demo.model.Address;
 import com.test.demo.model.User;
@@ -49,7 +51,8 @@ public class UserControlller {
 //		return ResponseEntity.created(location).build();
 
 	}
-	
+	@JsonView(UserView.Public.class)
+
 	@GetMapping("/allusers")
 	public List<User> retrieveAllUsers() {
 		System.out.println("User get all api-------------------------");

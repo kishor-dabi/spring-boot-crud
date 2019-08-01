@@ -15,30 +15,42 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.test.demo.jsonview.UserView;
+
 @Entity
 @Table(name="users")
 public class User {
+	
+	@JsonView(UserView.Public.class) // remove when no need to jsonview and all value
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column
 	private Long id;
+	
+	@JsonView(UserView.Public.class) // remove when no need to jsonview and all value
 	@Column
 	private String name;
+	
+	@JsonView(UserView.Public.class) // remove when no need to jsonview and all value
 	@Column
 	private String number;
 	
+	@JsonView(UserView.Public.class) // remove when no need to jsonview and all value	
 	@Column(unique = true)
 	@NotNull(message = "email can not be null.")
 	private String email;
 	
-    @Column
+	@Column
     @NotNull(message = "password can not be null.")
     private String password;
 	
+	@JsonView(UserView.Public.class) // remove when no need to jsonview and all value
 	@OneToOne(cascade = {CascadeType.ALL, CascadeType.REMOVE})
     @JoinColumn(name = "address_id")
 	private Address address;
     
+	@JsonView(UserView.Public.class) // remove when no need to jsonview and all value
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private List<Account> accounts;
